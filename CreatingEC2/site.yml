@@ -1,0 +1,23 @@
+---
+- name: Create AWS instance
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: False
+  remote_user: ubuntu
+  roles:
+    - create
+
+- name: Install Tomcat
+  hosts: webserver
+  become: yes
+  become_method: sudo
+  gather_facts: False
+  remote_user: ubuntu
+  pre_tasks:
+    - name: Install python for Ansible
+      raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
+      register: output
+      changed_when: output.stdout != ""
+  roles:
+    - tomcat
+

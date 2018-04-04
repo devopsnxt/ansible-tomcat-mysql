@@ -1,0 +1,10 @@
+---
+# This playbook deploys as tomcat application in defined hosts group of ec2 instances  
+
+# Configure and deploy tomcat
+- hosts: webserver
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  roles:
+    - tomcat
